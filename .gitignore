@@ -1,0 +1,4 @@
+*.http
+bin
+obj
+*.sln
