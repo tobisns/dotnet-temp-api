@@ -1,7 +1,13 @@
 
+using Microsoft.EntityFrameworkCore;
 using Pokemon.API.Extensions;
+using Pokemon.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<PokemonDbContext>(
+                options => options.UseNpgsql(builder.Configuration
+                .GetConnectionString("PrimaryDbConnection")));
 
 //Register Services
 builder.Services.RegisterService();

@@ -1,5 +1,7 @@
+using Pokemon.Core.Interfaces.IRepositories;
 using Pokemon.Core.Interfaces.IServices;
 using Pokemon.Core.Services;
+using Pokemon.Infrastructure.Repositories;
 
 namespace Pokemon.API.Extensions
 {
@@ -9,6 +11,12 @@ namespace Pokemon.API.Extensions
         {
             #region Services
             services.AddScoped<IWeatherService, WeatherService>();
+            services.AddScoped<IPokemonService, PokemonService>();
+
+            #endregion
+
+            #region Repositories
+            services.AddTransient<IPokemonRepository, PokemonRepository>();
 
             #endregion
 
