@@ -1,4 +1,5 @@
 using Pokemon.Core.Interfaces.IRepositories;
+using Pokemon.Core.Exceptions;
 ﻿using Microsoft.EntityFrameworkCore;
 using Pokemon.Infrastructure.Data;
 
@@ -23,5 +24,42 @@ namespace Pokemon.Infrastructure.Repositories
 
             return data;
         }
+
+        public async Task<IEnumerable<Core.Entities.General.Pokemon>> GetPaginated(int pageNumber, int pageSize)
+        {
+            var data = await _dbContext.Set<Core.Entities.General.Pokemon>()
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .AsNoTracking()
+                .ToListAsync();
+
+            return data;
+        }
+
+        public async Task<Core.Entities.General.Pokemon> Create(Core.Entities.General.Pokemon model)
+        {
+            await _dbContext.Set<Core.Entities.General.Pokemon>().AddAsync(model);
+            await _dbContext.SaveChangesAsync();
+            return model;
+        }
+
+        public async Task Update(Core.Entities.General.Pokemon model)
+        {
+            _dbContext.Set<Core.Entities.General.Pokemon>().Update(model);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task Delete(Core.Entities.General.Pokemon model)
+        {
+            _dbContext.Set<Core.Entities.General.Pokemon>().Remove(model);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<Core.Entities.General.Pokemon> GetByName(string name)
+        {
+            var data = await _dbContext.Set<Core.Entities.General.Pokemon>().FirstOrDefaultAsync(p => p.Name == name) ?? throw new NotFoundException("No data found");
+            return data;
+        }
+
     }
 }
