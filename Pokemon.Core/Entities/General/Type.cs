@@ -9,7 +9,7 @@ namespace Pokemon.Core.Entities.General
         public required string Name { get; set; }
 
         // Navigation property
-        public required List<PokemonType> PokemonTypes { get; set; }
+        public List<PokemonType>? PokemonTypes { get; set; }
     }
 
 }
