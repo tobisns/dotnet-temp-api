@@ -13,12 +13,14 @@ namespace Pokemon.API.Extensions
             services.AddScoped<IWeatherService, WeatherService>();
             services.AddScoped<IPokemonService, PokemonService>();
             services.AddScoped<ITypeService, TypeService>();
+            services.AddScoped<IEvoTreeService, EvoTreeService>();
 
             #endregion
 
             #region Repositories
             services.AddTransient<IPokemonRepository, PokemonRepository>();
             services.AddTransient<ITypeRepository, TypeRepository>();
+            services.AddTransient<IEvoTreeRepository, EvoTreeRepository>();
 
             #endregion
 

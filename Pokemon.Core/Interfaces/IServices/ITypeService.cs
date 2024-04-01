@@ -5,9 +5,11 @@ namespace Pokemon.Core.Interfaces.IServices
 {
     public interface ITypeService
     {
-        Task<IEnumerable<Entities.General.Type>> GetTypes();
+        Task<Entities.Business.ListTypes> GetTypes();
         Task<Entities.General.Type> Create(Entities.General.Type model);
         Task Update(int id, Entities.General.Type model);
         Task Delete(int id);
+        Task<IEnumerable<PokemonType>> Assign(int id, Entities.Business.Pokemon model);
+        Task<IEnumerable<PokemonType>> Unassign(int id, Entities.Business.Pokemon model);
     }
 }

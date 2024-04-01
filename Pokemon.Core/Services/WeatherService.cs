@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Pokemon.Core.Entities.General;
+using Pokemon.Core.Entities.Business;
 using Pokemon.Core.Interfaces.IServices;
 
 

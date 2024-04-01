@@ -4,7 +4,7 @@ using Pokemon.Core.Services;
 
 namespace Pokemon.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("types")]
     [ApiController]
     public class TypeController : ControllerBase
     {
@@ -80,20 +80,47 @@ namespace Pokemon.API.Controllers
             return StatusCode(StatusCodes.Status400BadRequest, "Please input all required data");
         }
 
+        [HttpPost("{id}")]
+        public async Task<IActionResult> Assign(int id, Core.Entities.Business.Pokemon model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var _resp = await _typeService.Assign(id, model);
+                    return Ok(_resp);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, $"An error occurred while updating the customer");
+                    string message = $"An error occurred while updating the customer- {ex.Message}";
+
+                    return StatusCode(StatusCodes.Status500InternalServerError, message);
+                }
+            }
+            return StatusCode(StatusCodes.Status400BadRequest, "Please input all required data");
+        }
+
         // DELETE api/type/[id]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Unassign(int id, Core.Entities.Business.Pokemon model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                await _typeService.Delete(id);
-                return Ok();
+                try
+                {
+                    var _resp = await _typeService.Unassign(id, model);
+                    return Ok(_resp);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, $"An error occurred while updating the customer");
+                    string message = $"An error occurred while updating the customer- {ex.Message}";
+
+                    return StatusCode(StatusCodes.Status500InternalServerError, message);
+                }
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while deleting the customer");
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while deleting the customer- " + ex.Message);
-            }
+            return StatusCode(StatusCodes.Status400BadRequest, "Please input all required data");
         }
     }
 

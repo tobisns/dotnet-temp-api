@@ -12,5 +12,6 @@ namespace Pokemon.Core.Interfaces.IRepositories
         Task Update(Entities.General.Pokemon model);
         Task<Entities.General.Pokemon> GetByName(string name);
         Task Delete(Entities.General.Pokemon model);
+        Task<IEnumerable<Entities.General.Type>> GetTypes(string name);
     }
 }

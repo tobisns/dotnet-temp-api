@@ -2,6 +2,7 @@ using Pokemon.Core.Interfaces.IRepositories;
 using Pokemon.Core.Exceptions;
 ﻿using Microsoft.EntityFrameworkCore;
 using Pokemon.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Pokemon.Infrastructure.Repositories
 {
@@ -50,5 +51,34 @@ namespace Pokemon.Infrastructure.Repositories
             return data;
         }
 
+        public async Task<IEnumerable<Core.Entities.General.PokemonType>> Assign<Tid>(Tid id, string name)
+        {
+            var typedata = await _dbContext.Set<Core.Entities.General.Type>().FindAsync(id) ?? throw new NotFoundException("No data found");
+            var pokemondata = await _dbContext.Set<Core.Entities.General.Pokemon>().FirstOrDefaultAsync(p => p.Name == name) ?? throw new NotFoundException("No data found");
+            var model = new Core.Entities.General.PokemonType { TypeId = typedata.Id, PokemonName = name, Type = typedata, Pokemon = pokemondata };
+
+            await _dbContext.Set<Core.Entities.General.PokemonType>().AddAsync(model);
+            await _dbContext.SaveChangesAsync();
+
+            return await _dbContext.Set<Core.Entities.General.PokemonType>()
+                .Where(t => t.TypeId.Equals(typedata.Id))
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Core.Entities.General.PokemonType>> Unassign<Tid>(Tid id, string name)
+        {
+            var typedata = await _dbContext.Set<Core.Entities.General.Type>().FindAsync(id) ?? throw new NotFoundException("No data found");
+            var pokemondata = await _dbContext.Set<Core.Entities.General.Pokemon>().FirstOrDefaultAsync(p => p.Name == name) ?? throw new NotFoundException("No data found");
+            var model = new Core.Entities.General.PokemonType { TypeId = typedata.Id, PokemonName = name, Type = typedata, Pokemon = pokemondata };
+
+            _dbContext.Set<Core.Entities.General.PokemonType>().Remove(model);
+            await _dbContext.SaveChangesAsync();
+
+            return await _dbContext.Set<Core.Entities.General.PokemonType>()
+                .Where(t => t.TypeId.Equals(typedata.Id))
+                .AsNoTracking()
+                .ToListAsync();
+        }
     }
 }

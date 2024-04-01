@@ -4,7 +4,7 @@ using Pokemon.Core.Services;
 
 namespace Pokemon.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("pokemons")]
     [ApiController]
     public class PokemonController : ControllerBase
     {
@@ -18,12 +18,12 @@ namespace Pokemon.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(int? pageNumber, int? pageSize)
+        public async Task<IActionResult> Get(int? offset, int? limit)
         {
             try
             {
-                int pageSizeValue = pageSize ?? 1;
-                int pageNumberValue = pageNumber ?? 1;
+                int pageSizeValue = limit ?? 1;
+                int pageNumberValue = offset ?? 1;
                 //Get peginated data
                 var customers = await _pokemonService.GetPokemonsPaginated(pageNumberValue, pageSizeValue);
 
@@ -37,7 +37,7 @@ namespace Pokemon.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Core.Entities.General.Pokemon model)
+        public async Task<IActionResult> Create(Core.Entities.Business.Pokemon model)
         {
             if (ModelState.IsValid)
             {
@@ -60,7 +60,7 @@ namespace Pokemon.API.Controllers
 
         // PUT api/pokemon/[name]
         [HttpPut("{name}")]
-        public async Task<IActionResult> Edit(string name, Core.Entities.General.Pokemon model)
+        public async Task<IActionResult> Edit(string name, Core.Entities.Business.Pokemon model)
         {
             if (ModelState.IsValid)
             {
@@ -88,6 +88,21 @@ namespace Pokemon.API.Controllers
             {
                 await _pokemonService.Delete(name);
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while deleting the customer");
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while deleting the customer- " + ex.Message);
+            }
+        }
+
+        [HttpGet("{name}")]
+        public async Task<IActionResult> GetDetails(string name)
+        {
+            try
+            {
+                var _data = await _pokemonService.GetDetails(name);
+                return Ok(_data);
             }
             catch (Exception ex)
             {

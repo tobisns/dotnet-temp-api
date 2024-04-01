@@ -4,10 +4,11 @@ namespace Pokemon.Core.Interfaces.IServices
 {
     public interface IPokemonService
     {
-        Task<IEnumerable<Entities.General.Pokemon>> GetPokemons();
-        Task<IEnumerable<Entities.General.Pokemon>> GetPokemonsPaginated(int pageNumber, int pageSize);
-        Task<Entities.General.Pokemon> Create(Entities.General.Pokemon model);
-        Task Update(string name, Entities.General.Pokemon model);
+        Task<Entities.Business.ListPokemon> GetPokemons();
+        Task<Entities.Business.ListPokemon> GetPokemonsPaginated(int pageNumber, int pageSize);
+        Task<Entities.General.Pokemon> Create(Entities.Business.Pokemon model);
+        Task Update(string name, Entities.Business.Pokemon model);
         Task Delete(string name);
+        Task<Entities.Business.Pokemon> GetDetails(string name);
     }
 }

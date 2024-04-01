@@ -61,5 +61,18 @@ namespace Pokemon.Infrastructure.Repositories
             return data;
         }
 
+        public async Task<IEnumerable<Core.Entities.General.Type>> GetTypes(string name)
+        {
+            var typeIds = _dbContext.Set<Core.Entities.General.PokemonType>()
+                                    .Where(t => t.PokemonName.Equals(name))
+                                    .Select(t => t.TypeId) // Select only the TypeId
+                                    .AsEnumerable() // Switch to in-memory processing
+                                    .Distinct() // Apply distinct
+                                    .ToList(); // Materialize the result
+
+            return await _dbContext.Types
+            .Where(t => typeIds.Contains(t.Id))
+            .ToListAsync();
+        }
     }
 }
