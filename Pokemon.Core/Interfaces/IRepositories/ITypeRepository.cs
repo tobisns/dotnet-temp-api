@@ -13,5 +13,6 @@ namespace Pokemon.Core.Interfaces.IRepositories
         Task Delete(Entities.General.Type model);
         Task<IEnumerable<PokemonType>> Assign<Tid>(Tid id, string name);
         Task<IEnumerable<PokemonType>> Unassign<Tid>(Tid id, string name);
+        Task<IEnumerable<PokemonType>> GetPokemonsWithType(int id);
     }
 }

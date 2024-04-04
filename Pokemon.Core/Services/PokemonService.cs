@@ -27,9 +27,9 @@ namespace Pokemon.Core.Services
             return new ListPokemon{ Pokemons = businessPokemons };
         }
 
-        public async Task<ListPokemon> GetPokemonsPaginated(int pageNumber, int pageSize)
+        public async Task<ListPokemon> GetPokemonsPaginated(int pageNumber, int pageSize, string query)
         {
-            var pokemons = await _pokemonRepository.GetPaginated(pageNumber, pageSize);
+            var pokemons = await _pokemonRepository.GetPaginated(pageNumber, pageSize, query);
             var businessPokemons = pokemons.Select(generalPokemon => new Entities.Business.Pokemon
             {
                 Name = generalPokemon.Name,

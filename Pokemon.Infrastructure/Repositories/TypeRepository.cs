@@ -80,5 +80,12 @@ namespace Pokemon.Infrastructure.Repositories
                 .AsNoTracking()
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Core.Entities.General.PokemonType>> GetPokemonsWithType(int id) {
+            return await _dbContext.Set<Core.Entities.General.PokemonType>()
+                                       .Where(pt => pt.TypeId == id)
+                                       .AsNoTracking()
+                                       .ToListAsync();
+        }
     }
 }

@@ -56,5 +56,17 @@ namespace Pokemon.Core.Services
         {
             return await _typeRepository.Unassign(id, model.Name);
         }
+
+        public async Task<ListPokemonType> GetPokemonWithTypes(int id)
+        {
+            var pokemonTypes = await _typeRepository.GetPokemonsWithType(id);
+            var businessTypes = pokemonTypes.Select(generalType => new PokemonType
+            {
+                Name = generalType.PokemonName,
+                TypeId = generalType.TypeId
+                // You may need to add additional property mappings depending on your requirements
+            });
+            return new ListPokemonType { Pokemons = businessTypes };
+        }
     }
 }

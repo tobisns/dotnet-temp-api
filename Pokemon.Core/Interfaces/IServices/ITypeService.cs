@@ -11,5 +11,6 @@ namespace Pokemon.Core.Interfaces.IServices
         Task Delete(int id);
         Task<IEnumerable<PokemonType>> Assign(int id, Entities.Business.Pokemon model);
         Task<IEnumerable<PokemonType>> Unassign(int id, Entities.Business.Pokemon model);
+        Task<Entities.Business.ListPokemonType> GetPokemonWithTypes(int id);
     }
 }

@@ -30,6 +30,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Configure CORS
+app.UseCors(builder =>
+{
+    builder.WithOrigins("http://localhost:3000") // Replace with your client application's origin
+           .AllowAnyMethod()
+           .AllowAnyHeader()
+           .AllowCredentials(); // Allow credentials
+});
+
 app.UseRouting();
 app.MapControllers();
 

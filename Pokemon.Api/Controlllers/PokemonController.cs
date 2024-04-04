@@ -18,14 +18,15 @@ namespace Pokemon.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(int? offset, int? limit)
+        public async Task<IActionResult> Get(int? offset, int? limit, string? query)
         {
             try
             {
                 int pageSizeValue = limit ?? 1;
-                int pageNumberValue = offset ?? 1;
+                int pageNumberValue = offset ?? 0;
+                string queryValue = query ?? "";
                 //Get peginated data
-                var customers = await _pokemonService.GetPokemonsPaginated(pageNumberValue, pageSizeValue);
+                var customers = await _pokemonService.GetPokemonsPaginated(pageNumberValue, pageSizeValue, queryValue);
 
                 return Ok(customers);
             }

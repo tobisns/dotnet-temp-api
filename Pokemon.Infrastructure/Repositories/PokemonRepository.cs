@@ -25,10 +25,11 @@ namespace Pokemon.Infrastructure.Repositories
             return data;
         }
 
-        public async Task<IEnumerable<Core.Entities.General.Pokemon>> GetPaginated(int pageNumber, int pageSize)
+        public async Task<IEnumerable<Core.Entities.General.Pokemon>> GetPaginated(int pageNumber, int pageSize, string query)
         {
             var data = await _dbContext.Set<Core.Entities.General.Pokemon>()
-                .Skip((pageNumber - 1) * pageSize)
+                .Where(p => p.Name.ToUpper().Contains(query.ToUpper()))
+                .Skip(pageNumber * pageSize)
                 .Take(pageSize)
                 .AsNoTracking()
                 .ToListAsync();

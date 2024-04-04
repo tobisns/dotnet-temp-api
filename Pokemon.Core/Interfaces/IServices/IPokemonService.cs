@@ -5,7 +5,7 @@ namespace Pokemon.Core.Interfaces.IServices
     public interface IPokemonService
     {
         Task<Entities.Business.ListPokemon> GetPokemons();
-        Task<Entities.Business.ListPokemon> GetPokemonsPaginated(int pageNumber, int pageSize);
+        Task<Entities.Business.ListPokemon> GetPokemonsPaginated(int pageNumber, int pageSize, string query);
         Task<Entities.General.Pokemon> Create(Entities.Business.Pokemon model);
         Task Update(string name, Entities.Business.Pokemon model);
         Task Delete(string name);

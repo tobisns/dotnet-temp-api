@@ -29,6 +29,15 @@ namespace Pokemon.Infrastructure.Repositories
                         // Insert the EvoTree into the database
                         var _dat = new EvoTree {Id = nextId, Level = evoTree.Level, PokemonName = evoTree.PokemonName};
                         await _dbContext.EvoTrees.AddAsync(_dat);
+
+                        // Update the Pokemon data's EvoTreeId to -1
+                        var pokemonData = await _dbContext.Pokemons.SingleOrDefaultAsync(p => p.Name == evoTree.PokemonName);
+                        
+                        if (pokemonData != null)
+                        {
+                            pokemonData.EvoTreeId = nextId;
+                        }
+
                         await _dbContext.SaveChangesAsync();
                     }
 
@@ -54,16 +63,20 @@ namespace Pokemon.Infrastructure.Repositories
             using (var transaction = await _dbContext.Database.BeginTransactionAsync())
             {
                 try {
-                    if (!await _dbContext.EvoTrees.AnyAsync(e => e.Id == id)) {
-                        await transaction.RollbackAsync();
-                        throw new Exception("No EvoTree found with the specified id");
-                    }
-
                     foreach (var evoTree in evoTrees)
                     {
                         // Insert the EvoTree into the database
                         var _dat = new EvoTree {Id = id, Level = evoTree.Level, PokemonName = evoTree.PokemonName};
                         await _dbContext.EvoTrees.AddAsync(_dat);
+
+                        // Update the Pokemon data's EvoTreeId to -1
+                        var pokemonData = await _dbContext.Pokemons.SingleOrDefaultAsync(p => p.Name == evoTree.PokemonName);
+                        
+                        if (pokemonData != null)
+                        {
+                            pokemonData.EvoTreeId = id;
+                        }
+
                         await _dbContext.SaveChangesAsync();
                     }
 
@@ -77,8 +90,6 @@ namespace Pokemon.Infrastructure.Repositories
                 }
                 catch (Exception)
                 {
-                    // Rollback the transaction if an exception occurs
-                    await transaction.RollbackAsync();
                     throw; // Re-throw the exception to handle it at a higher level if necessary
                 }
             }
@@ -99,6 +110,15 @@ namespace Pokemon.Infrastructure.Repositories
                         // Insert the EvoTree into the database
                         var _dat = new EvoTree {Id = id, PokemonName = evoTree.PokemonName};
                         _dbContext.EvoTrees.Remove(_dat);
+
+                        // Update the Pokemon data's EvoTreeId to -1
+                        var pokemonData = await _dbContext.Pokemons.SingleOrDefaultAsync(p => p.Name == evoTree.PokemonName);
+                        
+                        if (pokemonData != null)
+                        {
+                            pokemonData.EvoTreeId = -1;
+                        }
+
                         await _dbContext.SaveChangesAsync();
                     }
 

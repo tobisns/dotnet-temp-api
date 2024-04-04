@@ -122,6 +122,27 @@ namespace Pokemon.API.Controllers
             }
             return StatusCode(StatusCodes.Status400BadRequest, "Please input all required data");
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPokemonsWithType(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var _resp = await _typeService.GetPokemonWithTypes(id);
+                    return Ok(_resp);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, $"An error occurred while updating the customer");
+                    string message = $"An error occurred while updating the customer- {ex.Message}";
+
+                    return StatusCode(StatusCodes.Status500InternalServerError, message);
+                }
+            }
+            return StatusCode(StatusCodes.Status400BadRequest, "Please input all required data");
+        }
     }
 
     

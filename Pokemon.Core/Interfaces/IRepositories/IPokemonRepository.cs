@@ -7,7 +7,7 @@ namespace Pokemon.Core.Interfaces.IRepositories
     public interface IPokemonRepository
     {
         Task<IEnumerable<Entities.General.Pokemon>> GetAll();
-        Task<IEnumerable<Entities.General.Pokemon>> GetPaginated(int pageNumber, int pageSize);
+        Task<IEnumerable<Entities.General.Pokemon>> GetPaginated(int pageNumber, int pageSize, string query);
         Task<Entities.General.Pokemon> Create(Entities.General.Pokemon model);
         Task Update(Entities.General.Pokemon model);
         Task<Entities.General.Pokemon> GetByName(string name);
